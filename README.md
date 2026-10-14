@@ -1,6 +1,9 @@
 # WardogsHub vote reward bot
 
-A small Discord bot that gives a role to members who voted for your server on WardogsHub. Members run `/claimvote`; the bot asks the WardogsHub vote check API whether their Discord account voted today and adds the role if it did.
+A small Discord bot that gives a role to members who voted for your server on WardogsHub. It works in two ways:
+
+- **Automatic.** Every few minutes the bot asks WardogsHub who has voted for your server and gives the role to anyone who is in your Discord server. Members get the role within a few minutes of voting and do not have to do anything. This only reaches members who are in your Discord server.
+- **`/claimvote`.** A member runs the command and the bot checks their own vote. This is handy for people who voted before they joined, or if you turn automatic mode off.
 
 Full API docs: https://wardogshub.gg/servers/vote-rewards/
 
@@ -23,7 +26,7 @@ You need Node 18 or newer, or Docker.
    npm start
    ```
 
-   When it prints "Ready as ...", type `/claimvote` in your server.
+   When it prints "Ready as ...", vote for your server and the role should arrive within a few minutes (or type `/claimvote` to check straight away).
 
 ## Settings
 
@@ -34,7 +37,8 @@ You need Node 18 or newer, or Docker.
 | `ROLE_ID` | The role given to voters |
 | `WARDOGSHUB_API_KEY` | Your `wdh_` key |
 | `VOTE_URL` | Your server page on WardogsHub |
-| `ROLE_HOURS` | Hours before the role is removed. Default 24, 0 = never |
+| `ROLE_HOURS` | Hours the role lasts, counted from the vote. Default 24, 0 = never removed |
+| `AUTO_POLL_MINUTES` | Minutes between automatic vote checks. Default 5, 0 = automatic mode off (`/claimvote` only) |
 | `CLAIMS_FILE` | Optional. Where claim times are saved. Default `claims.json` next to `bot.js` |
 
 ## Run with Docker
@@ -48,7 +52,7 @@ Claim times live in the `vote-bot-data` volume, so they survive restarts and upg
 
 ## Where to host it
 
-Any machine that stays switched on: a small VPS, a home server or a Raspberry Pi. Run it under a process manager such as pm2 or systemd so it restarts after a crash. Hosts that put apps to sleep are a poor fit: the bot has to stay connected to Discord, and `/claimvote` and role removal stop while it is asleep.
+Any machine that stays switched on: a small VPS, a home server or a Raspberry Pi. Run it under a process manager such as pm2 or systemd so it restarts after a crash. Hosts that put apps to sleep are a poor fit: the bot has to stay connected to Discord, and automatic rewards, `/claimvote` and role removal stop while it is asleep.
 
 Claim times are kept in `claims.json` (see `CLAIMS_FILE`). Keep that file when you move the bot, or members who already claimed will keep the role.
 
