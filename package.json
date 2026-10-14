@@ -1,0 +1,17 @@
+{
+  "name": "wardogshub-vote-reward-bot",
+  "version": "1.0.0",
+  "description": "Discord bot that gives a role to members who voted for your server on WardogsHub.",
+  "type": "module",
+  "main": "bot.js",
+  "scripts": {
+    "start": "node bot.js"
+  },
+  "engines": {
+    "node": ">=18"
+  },
+  "dependencies": {
+    "discord.js": "^14.22.0",
+    "dotenv": "^16.4.5"
+  }
+}
